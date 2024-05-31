@@ -1,0 +1,28 @@
+name: learn_play_world
+description: "A new Flutter project to learn and play with."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.3.4 <4.0.0'
+
+dependencies:
+  animated_splash_screen: ^1.3.0
+  flutter:
+    sdk: flutter
+  video_player: ^2.8.6
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/videos/
+    - assets/images/animals/
+    - assets/images/animals/masks/
+    - assets/images/buttons/
+    - assets/images/buttons/game/
