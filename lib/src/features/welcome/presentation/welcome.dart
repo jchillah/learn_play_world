@@ -38,7 +38,7 @@ class Welcome extends StatelessWidget {
                         context,
                         MaterialPageRoute(builder: (context) {
                           return const Guide();
-                        }), // hier gibst du den Screen an zu den du navigieren möchtest
+                        }),
                       );
                     },
                     child: Image.asset(

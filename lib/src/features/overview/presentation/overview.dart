@@ -18,129 +18,122 @@ class Overview extends StatefulWidget {
 class _OverviewState extends State<Overview> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Positioned(
-                left: 30,
-                top: 61,
-                right: 290,
-                child: GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return const Introduction();
-                      },
-                    );
-                  },
-                  child: Image.asset(
-                    'assets/images/buttons/questionmark.png',
-                    width: 40,
-                    height: 60,
-                    fit: BoxFit.contain,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundColor,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: SingleChildScrollView(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return const Introduction();
+                        },
+                      );
+                    },
+                    child: Image.asset(
+                      'assets/images/buttons/questionmark4.png',
+                      width: 80,
+                      height: 120,
+                      fit: BoxFit.contain,
+                    ),
                   ),
-                ),
-              ),
-              Positioned(
-                left: 270,
-                top: 61,
-                right: 19,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const UnlockSettingTask()),
-                    );
-                  },
-                  child: Image.asset(
-                    'assets/images/buttons/settings_button.png',
-                    width: 40,
-                    height: 60,
-                    fit: BoxFit.contain,
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UnlockSettingTask()),
+                      );
+                    },
+                    child: Image.asset(
+                      'assets/images/buttons/settings_button.png',
+                      width: 80,
+                      height: 120,
+                      fit: BoxFit.contain,
+                    ),
                   ),
-                ),
+                ],
               ),
-              Positioned(
-                left: 59.97,
-                top: 160,
+              const SizedBox(
+                height: 50,
+              ),
+              Image.asset(
+                'assets/images/choose_game_text.png',
+                width: 275,
+                height: 40,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const GameFarm(
+                              levelTheme: 'Farm',
+                              level: 1,
+                            )),
+                  );
+                },
                 child: Image.asset(
-                  'assets/images/choose_game_text.png',
-                  width: 275,
-                  height: 40,
-                  fit: BoxFit.cover,
+                  'assets/images/buttons/game/farm_button.png',
+                  width: 361,
+                  height: 119,
                 ),
               ),
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    const SizedBox(height: 192),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const GameFarm(
-                                    levelTheme: 'Farm',
-                                    level: 1,
-                                  )),
-                        );
-                      },
-                      child: Image.asset(
-                        'assets/images/buttons/game/farm_button.png',
-                        width: 361,
-                        height: 119,
-                      ),
-                    ),
-                    const SizedBox(height: 84),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const GameJungle(
-                                    levelTheme: 'Jungle',
-                                    level: 1,
-                                  )),
-                        );
-                      },
-                      child: Image.asset(
-                        'assets/images/buttons/game/jungle_button.png',
-                        width: 361,
-                        height: 119,
-                      ),
-                    ),
-                    const SizedBox(height: 84),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const GameOcean(
-                                    levelTheme: 'Ocean',
-                                    level: 1,
-                                  )),
-                        );
-                      },
-                      child: Image.asset(
-                        'assets/images/buttons/game/ocean_button.png',
-                        width: 361,
-                        height: 119,
-                      ),
-                    ),
-                  ],
+              const SizedBox(
+                height: 50,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const GameJungle(
+                              levelTheme: 'Jungle',
+                              level: 1,
+                            )),
+                  );
+                },
+                child: Image.asset(
+                  'assets/images/buttons/game/jungle_button.png',
+                  width: 361,
+                  height: 119,
+                ),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const GameOcean(
+                              levelTheme: 'Ocean',
+                              level: 1,
+                            )),
+                  );
+                },
+                child: Image.asset(
+                  'assets/images/buttons/game/ocean_button.png',
+                  width: 361,
+                  height: 119,
                 ),
               ),
             ],
-          ),
+          )),
         ),
       ),
     );
