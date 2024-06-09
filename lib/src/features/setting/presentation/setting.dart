@@ -15,35 +15,42 @@ class SettingState extends State<Setting> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      body: SafeArea(
-        child: Column(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundColor,
+        body: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Overview(),
-                      ),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    iconSize: 48,
+                    onPressed: () {},
+                    icon: const Icon(Icons.star_border_purple500_sharp),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Overview(),
+                        ),
+                      );
+                    },
                     child: Image.asset(
                       'assets/images/buttons/close_button.png',
-                      width: 40,
-                      height: 60,
+                      width: 60,
+                      height: 70,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            Center(
+            Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -56,13 +63,13 @@ class SettingState extends State<Setting> {
                       fontFamily: 'Holtwood SC',
                     ),
                   ),
-                  const SizedBox(width: 50),
+                  const Spacer(),
                   Container(
                     decoration: const BoxDecoration(
                       color: AppColors.textColor,
                     ),
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<Language>(
                         focusColor: AppColors.textColor,

@@ -9,8 +9,9 @@ class Guide extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      body: SingleChildScrollView(
-        child: SafeArea(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: SingleChildScrollView(
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -46,8 +47,9 @@ class Guide extends StatelessWidget {
                             child: child,
                           );
                         },
-                        pageBuilder: (context, animation, secondaryAnimation) =>
-                            const Overview(),
+                        pageBuilder: (context, animation, secondaryAnimation) {
+                          return const Overview();
+                        },
                       ),
                     );
                   },

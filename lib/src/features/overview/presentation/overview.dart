@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learn_play_world/src/config/colors/app_colors.dart';
-import 'package:learn_play_world/src/features/game/presentation/game_Farm/presentation/game_farm.dart';
+import 'package:learn_play_world/src/features/game/presentation/game_farm/presentation/game_farm.dart';
 import 'package:learn_play_world/src/features/game/presentation/game_jungle/presentation/game_jungle.dart';
 import 'package:learn_play_world/src/features/game/presentation/game_ocean/presentation/game_ocean.dart';
 import 'package:learn_play_world/src/features/introduction_guide/presentation/introduction.dart';
@@ -39,7 +39,7 @@ class _OverviewState extends State<Overview> {
                       );
                     },
                     child: Image.asset(
-                      'assets/images/buttons/questionmark4.png',
+                      'assets/images/buttons/questionmark.png',
                       width: 80,
                       height: 120,
                       fit: BoxFit.contain,

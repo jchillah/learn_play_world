@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learn_play_world/src/config/colors/app_colors.dart';
-import 'package:learn_play_world/src/data/video_path_provider/video_path_provider.dart';
+import 'package:learn_play_world/src/data/mock_database.dart';
 import 'package:learn_play_world/src/features/game/presentation/game_end/presentation/game_end.dart';
 import 'package:learn_play_world/src/features/introduction_guide/presentation/introduction.dart';
 import 'package:learn_play_world/src/features/setting/presentation/unlock_setting_task.dart';
@@ -33,8 +33,7 @@ class GameFarmState extends State<GameFarm> {
     super.initState();
     chickenButtonColor = AppColors.answerButtonColor;
     pigButtonColor = AppColors.answerButtonColor;
-    _videoPath =
-        VideoPathProvider.getVideoPath(widget.levelTheme, widget.level);
+    _videoPath = MockDatabase().getVideoPath(widget.levelTheme, widget.level);
     _controller = VideoPlayerController.asset(
       _videoPath,
       videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: true),
@@ -87,7 +86,7 @@ class GameFarmState extends State<GameFarm> {
                       );
                     },
                     child: Image.asset(
-                      'assets/images/buttons/questionmark4.png',
+                      'assets/images/buttons/questionmark.png',
                       width: 80,
                       height: 120,
                       fit: BoxFit.contain,
@@ -179,8 +178,8 @@ class GameFarmState extends State<GameFarm> {
                   children: [
                     Image.asset(
                       'assets/images/animals/masks/chicken_mask.png',
-                      width: 83,
-                      height: 87,
+                      width: 140,
+                      height: 150,
                       fit: BoxFit.cover,
                     ),
                     if (_controller.value.isInitialized)

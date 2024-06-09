@@ -10,34 +10,39 @@ class GameEnd extends StatefulWidget {
     required this.levelTheme,
     required this.level,
   });
+
   final String levelTheme;
   final int level;
+
   @override
   State<GameEnd> createState() => GameEndState();
 }
 
 class GameEndState extends State<GameEnd> {
-  late Timer _timer;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     _timer = Timer(const Duration(seconds: 3), () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              GameEndVideo(levelTheme: widget.levelTheme, level: 1),
-          settings: RouteSettings(
-              arguments: ModalRoute.of(context)!.settings.arguments),
-        ),
-      );
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GameEndVideo(
+                levelTheme: widget.levelTheme, level: widget.level),
+            settings: RouteSettings(
+              arguments: ModalRoute.of(context)!.settings.arguments,
+            ),
+          ),
+        );
+      }
     });
   }
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -47,19 +52,18 @@ class GameEndState extends State<GameEnd> {
       backgroundColor: AppColors.backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 16.0, right: 16, top: 16),
-                  child: Image.asset(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Center(
+              child: Column(
+                children: [
+                  Image.asset(
                     'assets/images/great.png',
                     fit: BoxFit.contain,
                   ),
-                ),
-                const SizedBox(height: 20),
-              ],
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
           ),
         ),

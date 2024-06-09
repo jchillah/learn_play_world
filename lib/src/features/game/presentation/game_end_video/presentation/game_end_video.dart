@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 import 'package:learn_play_world/src/config/colors/app_colors.dart';
+import 'package:learn_play_world/src/data/mock_database.dart';
 import 'package:learn_play_world/src/features/overview/presentation/overview.dart';
-import 'package:learn_play_world/src/data/video_path_provider/video_path_provider.dart';
+import 'package:video_player/video_player.dart';
 
 class GameEndVideo extends StatefulWidget {
   final String levelTheme;
@@ -27,8 +27,7 @@ class GameEndVideoState extends State<GameEndVideo> {
   @override
   void initState() {
     super.initState();
-    _videoPath =
-        VideoPathProvider.getVideoPath(widget.levelTheme, widget.level);
+    _videoPath = MockDatabase().getVideoPath(widget.levelTheme, widget.level);
     _controller = VideoPlayerController.asset(
       _videoPath,
       videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: true),
@@ -44,8 +43,8 @@ class GameEndVideoState extends State<GameEndVideo> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
+    _controller.dispose();
   }
 
   bool checkLevelCompletion(String levelTheme, int level) {
@@ -60,9 +59,10 @@ class GameEndVideoState extends State<GameEndVideo> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
