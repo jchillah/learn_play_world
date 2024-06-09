@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:learn_play_world/src/config/colors/app_colors.dart';
 import 'package:learn_play_world/src/data/mock_database.dart';
+import 'package:learn_play_world/src/features/game/presentation/game_Farm/presentation/menu_row.dart';
 import 'package:learn_play_world/src/features/game/presentation/game_end/presentation/game_end.dart';
-import 'package:learn_play_world/src/features/introduction_guide/presentation/introduction.dart';
-import 'package:learn_play_world/src/features/setting/presentation/unlock_setting_task.dart';
 import 'package:video_player/video_player.dart';
 
 class GameOcean extends StatefulWidget {
@@ -74,42 +73,7 @@ class GameOceanState extends State<GameOcean> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return const Introduction();
-                        },
-                      );
-                    },
-                    child: Image.asset(
-                      'assets/images/buttons/questionmark.png',
-                      width: 80,
-                      height: 120,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const UnlockSettingTask()),
-                      );
-                    },
-                    child: Image.asset(
-                      'assets/images/buttons/settings_button.png',
-                      width: 80,
-                      height: 120,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ],
-              ),
+              const MenuRow(),
               const SizedBox(
                 height: 50,
               ),
