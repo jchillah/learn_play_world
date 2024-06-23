@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:learn_play_world/src/config/colors/app_colors.dart';
 import 'package:learn_play_world/src/data/video_path_provider/video_path_provider.dart';
-import 'package:learn_play_world/src/features/game/presentation/game_Farm/presentation/answer_button/answer_button.dart';
-import 'package:learn_play_world/src/features/game/presentation/game_Farm/presentation/answer_button/answer_mask.dart';
 import 'package:learn_play_world/src/features/game/presentation/game_end/presentation/game_end.dart';
+import 'package:learn_play_world/src/features/utils/answer_button.dart';
+import 'package:learn_play_world/src/features/utils/answer_mask.dart';
 import 'package:learn_play_world/src/features/utils/menu_row.dart';
 import 'package:video_player/video_player.dart';
 
