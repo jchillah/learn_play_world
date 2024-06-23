@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:learn_play_world/src/config/colors/app_colors.dart';
 import 'package:learn_play_world/src/data/mock_database.dart';
+import 'package:learn_play_world/src/features/game/presentation/game_Farm/presentation/answer_button/answer_button.dart';
+import 'package:learn_play_world/src/features/game/presentation/game_Farm/presentation/answer_button/answer_mask.dart';
 import 'package:learn_play_world/src/features/game/presentation/game_end/presentation/game_end.dart';
 import 'package:learn_play_world/src/features/utils/menu_row.dart';
 import 'package:video_player/video_player.dart';
@@ -22,7 +24,7 @@ class GameOcean extends StatefulWidget {
 class GameOceanState extends State<GameOcean> {
   late Color whaleButtonColor;
   late Color cancerButtonColor;
-  late VideoPlayerController _controller;
+  late VideoPlayerController videoController;
   late String _videoPath;
   late bool isAnswerCorrect = false;
   late String levelTheme = widget.levelTheme;
@@ -33,13 +35,13 @@ class GameOceanState extends State<GameOcean> {
     whaleButtonColor = AppColors.answerButtonColor;
     cancerButtonColor = AppColors.answerButtonColor;
     _videoPath = MockDatabase().getVideoPath(widget.levelTheme, widget.level);
-    _controller = VideoPlayerController.asset(
+    videoController = VideoPlayerController.asset(
       _videoPath,
       videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: true),
     )..initialize().then((_) {
         setState(() {
-          _controller.play();
-          _controller.setLooping(false);
+          videoController.play();
+          videoController.setLooping(false);
         });
       });
   }
@@ -47,7 +49,7 @@ class GameOceanState extends State<GameOcean> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    videoController.dispose();
   }
 
   void handleAnimalSelection(String animal) {
@@ -66,10 +68,10 @@ class GameOceanState extends State<GameOcean> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      body: SafeArea(
-        child: Padding(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundColor,
+        body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: <Widget>[
@@ -77,114 +79,50 @@ class GameOceanState extends State<GameOcean> {
               const SizedBox(
                 height: 50,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  levelTheme = 'Farm';
-                  setState(
-                    () {
-                      handleAnimalSelection('cancer');
-                    },
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  backgroundColor: cancerButtonColor,
-                  fixedSize: const Size(247, 149),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  shadowColor:
-                      const Color.fromARGB(255, 10, 10, 10).withOpacity(0.4),
-                  elevation: 4,
-                ),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
-                        'assets/images/animals/cancer.png',
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ],
-                ),
+              AnswerButton(
+                  levelTheme: 'Ocean',
+                  isAnswerCorrect: false,
+                  controller: videoController,
+                  onPressed: () {
+                    handleAnimalSelection('cancer');
+                  },
+                  imagePath: 'assets/images/animals/cancer.png',
+                  buttonColor: cancerButtonColor),
+              const SizedBox(height: 50),
+              AnswerMask(
+                controller: videoController,
+                imageAsset: 'assets/images/animals/masks/whale_mask.png',
+                width: 210,
+                height: 120,
               ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    if (_controller.value.isPlaying) {
-                      _controller.pause();
-                    } else {
-                      _controller.play();
-                    }
-                  });
-                },
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/animals/masks/whale_mask.png',
-                      width: 170,
-                      height: 250,
-                      fit: BoxFit.contain,
-                    ),
-                    if (_controller.value.isInitialized)
-                      SizedBox(
-                        height: 0,
-                        width: 0,
-                        child: VideoPlayer(_controller),
-                      ),
-                  ],
-                ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  levelTheme = 'Ocean';
-                  setState(() {
-                    isAnswerCorrect = true;
-                    whaleButtonColor = AppColors.answerButtonColor;
-                    cancerButtonColor = AppColors.answerButtonColor;
-                    _controller.pause();
-                  });
+              const SizedBox(height: 50),
+              AnswerButton(
+                  levelTheme: 'Ocean',
+                  isAnswerCorrect: true,
+                  controller: videoController,
+                  onPressed: () {
+                    setState(() {
+                      isAnswerCorrect = true;
+                      whaleButtonColor = AppColors.answerButtonColor;
+                      cancerButtonColor = AppColors.answerButtonColor;
+                      videoController.pause();
+                    });
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GameEnd(
-                        levelTheme: levelTheme,
-                        level: 1,
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GameEnd(
+                          levelTheme: levelTheme,
+                          level: 1,
+                        ),
+                        settings: RouteSettings(
+                          arguments: ModalRoute.of(context)!.settings.arguments,
+                        ),
                       ),
-                      settings: RouteSettings(
-                        arguments: ModalRoute.of(context)!.settings.arguments,
-                      ),
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  backgroundColor: whaleButtonColor,
-                  fixedSize: const Size(247, 149),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  shadowColor:
-                      const Color.fromARGB(255, 10, 10, 10).withOpacity(0.4),
-                  elevation: 4,
-                ),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
-                        'assets/images/animals/whale.png',
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                    );
+                  },
+                  imagePath: 'assets/images/animals/whale.png',
+                  buttonColor: whaleButtonColor),
             ],
           ),
         ),

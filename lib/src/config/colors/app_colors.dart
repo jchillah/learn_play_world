@@ -28,5 +28,12 @@ class AppColors {
     255,
   );
 
+  static const Color correctAnswerButtonColor = Color.fromARGB(
+    255,
+    255,
+    255,
+    255,
+  );
+
   static const Color wrongAnswerButtonColor = Color.fromRGBO(247, 15, 15, 0.4);
 }
