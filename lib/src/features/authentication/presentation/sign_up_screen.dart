@@ -4,25 +4,24 @@ import 'package:learn_play_world/src/config/colors/app_colors.dart';
 import 'package:learn_play_world/src/data/auth_repository.dart.dart';
 import 'package:learn_play_world/src/features/authentication/application/validators.dart';
 import 'package:learn_play_world/src/features/authentication/presentation/login_screen.dart';
+import 'package:learn_play_world/src/features/welcome/presentation/welcome.dart'; // Importiere die Welcome-Seite
 
 class SignUpScreen extends StatefulWidget {
-  // Attribute
-
-  // Konstruktor
   const SignUpScreen({super.key});
 
-  // Methoden
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  // state
   bool showPassword = false;
 
   late TextEditingController _emailController;
   late TextEditingController _pwController;
   late TextEditingController _pwRepeatController;
+
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   @override
   void initState() {
@@ -40,9 +39,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
+  void _showSnackbar(String message) {
+    _scaffoldKey.currentState?.showSnackBar(SnackBar(content: Text(message)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         backgroundColor: AppColors.backgroundColor,
@@ -118,15 +122,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 32),
                 ElevatedButton(
                   onPressed: () async {
-                    await context
-                        .read<AuthRepository>()
-                        .signUpWithEmailAndPassword(
-                          _emailController.text,
-                          _pwController.text,
-                        );
+                    try {
+                      await context
+                          .read<AuthRepository>()
+                          .signUpWithEmailAndPassword(
+                            _emailController.text,
+                            _pwController.text,
+                          );
+                      _showSnackbar("Account wurde erfolgreich erstellt");
+                      // Nach erfolgreicher Registrierung zur Welcome-Seite navigieren
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Welcome(),
+                        ),
+                      );
+                    } catch (e) {
+                      _showSnackbar("Fehler beim Erstellen des Accounts: $e");
+                    }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFBADE02), // Updated color
+                    backgroundColor: AppColors.buttonColor,
                   ),
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
@@ -139,11 +155,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(
-                          ),
-                        ));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
+                    );
                   },
                   child: const Text("Bereits einen Account? Zum Login"),
                 ),

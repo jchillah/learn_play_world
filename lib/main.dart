@@ -25,10 +25,8 @@ void main() async {
       ),
       Provider<AuthRepository>(
         create: (context) => authRepository,
-      )
-
+      ),
     ],
-    child: const App(
-    ),
+    child: const App(),
   ));
 }

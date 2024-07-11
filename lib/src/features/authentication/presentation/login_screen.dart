@@ -146,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ElevatedButton(
                   onPressed: isLoading ? null : _signInWithEmailAndPassword,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFBADE02), // Updated color
+                    backgroundColor: AppColors.buttonColor, // Updated color
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

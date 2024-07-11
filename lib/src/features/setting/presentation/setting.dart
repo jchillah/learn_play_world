@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_play_world/src/config/colors/app_colors.dart';
+import 'package:learn_play_world/src/features/authentication/presentation/login_screen.dart';
 import 'package:learn_play_world/src/features/overview/presentation/overview.dart';
 import 'package:learn_play_world/src/features/setting/domain/languages.dart';
-import 'package:learn_play_world/src/features/authentication/presentation/login_screen.dart';
 
 class Setting extends StatefulWidget {
   const Setting({super.key});
@@ -14,12 +15,47 @@ class Setting extends StatefulWidget {
 
 class SettingState extends State<Setting> {
   Language dropdownValue = Language.deutsch;
+  final TextEditingController _usernameController = TextEditingController();
   User? currentUser;
 
   @override
   void initState() {
     super.initState();
     currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      _fetchUsername();
+    }
+  }
+
+  Future<void> _fetchUsername() async {
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser!.uid)
+        .get();
+
+    if (userDoc.exists && userDoc.data() != null) {
+      setState(() {
+        _usernameController.text = userDoc['username'] ?? '';
+      });
+    }
+  }
+
+  Future<void> _saveUsername() async {
+    if (currentUser != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser!.uid)
+          .set({
+        'username': _usernameController.text,
+      }, SetOptions(merge: true));
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Username saved successfully'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   void _logout() async {
@@ -91,7 +127,6 @@ class SettingState extends State<Setting> {
                         const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<Language>(
-                        focusColor: AppColors.textColor,
                         value: dropdownValue,
                         icon: const Icon(Icons.arrow_drop_down_sharp),
                         iconSize: 24,
@@ -116,7 +151,54 @@ class SettingState extends State<Setting> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text(
+                    'Spielername:',
+                    style: TextStyle(
+                      color: AppColors.textColor,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Holtwood SC',
+                    ),
+                  ),
+                  const Spacer(),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: TextField(
+                        controller: _usernameController,
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          fillColor: AppColors.textColor,
+                          filled: true,
+                          hintText: 'Enter your username',
+                          hintStyle: TextStyle(color: AppColors.buttonColor),
+                        ),
+                        onEditingComplete: _saveUsername,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ElevatedButton(
+              onPressed: _saveUsername,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.buttonColor,
+                textStyle: const TextStyle(color: Colors.white),
+              ),
+              child: const Text('Save Username'),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
