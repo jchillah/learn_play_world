@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_play_world/src/config/colors/app_colors.dart';
 import 'package:learn_play_world/src/features/overview/presentation/overview.dart';
 import 'package:learn_play_world/src/features/setting/domain/languages.dart';
+import 'package:learn_play_world/src/features/authentication/presentation/login_screen.dart';
 
 class Setting extends StatefulWidget {
   const Setting({super.key});
@@ -12,6 +14,23 @@ class Setting extends StatefulWidget {
 
 class SettingState extends State<Setting> {
   Language dropdownValue = Language.deutsch;
+  User? currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = FirebaseAuth.instance.currentUser;
+  }
+
+  void _logout() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +114,43 @@ class SettingState extends State<Setting> {
                     ),
                   ),
                 ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'E-Mail: ${currentUser?.email ?? 'Nicht eingeloggt'}',
+                    style: const TextStyle(
+                      color: AppColors.textColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'UID: ${currentUser?.uid ?? 'Nicht eingeloggt'}',
+                    style: const TextStyle(
+                      color: AppColors.textColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton(
+              onPressed: _logout,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFBADE02), // Button color
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Logout'),
               ),
             ),
           ],

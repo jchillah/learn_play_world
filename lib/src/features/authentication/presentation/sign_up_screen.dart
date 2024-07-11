@@ -9,9 +9,7 @@ class SignUpScreen extends StatefulWidget {
   // Attribute
 
   // Konstruktor
-  const SignUpScreen(
-      {super.key,
-      });
+  const SignUpScreen({super.key});
 
   // Methoden
   @override
@@ -48,7 +46,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         backgroundColor: AppColors.backgroundColor,
-        
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -57,8 +54,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Column(
               children: [
                 Image.asset(
-                  "assets/images/learn_play_world.png",),
-                  const SizedBox(height: 20,),
+                  "assets/images/learn_play_world.png",
+                ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _emailController,
                   validator: validateEmail,
@@ -120,9 +118,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 32),
                 ElevatedButton(
                   onPressed: () async {
-                    await context.read<AuthRepository>().signUpWithEmailAndPassword(
-                        _emailController.text, _pwController.text);
+                    await context
+                        .read<AuthRepository>()
+                        .signUpWithEmailAndPassword(
+                          _emailController.text,
+                          _pwController.text,
+                        );
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFBADE02), // Updated color
+                  ),
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text("Registrieren"),

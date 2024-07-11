@@ -8,7 +8,6 @@ import 'package:learn_play_world/src/features/authentication/presentation/sign_u
 import 'package:learn_play_world/src/features/welcome/presentation/welcome.dart';
 
 class LoginScreen extends StatefulWidget {
-
   const LoginScreen({
     super.key,
   });
@@ -53,15 +52,14 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       await context.read<AuthRepository>().loginWithEmailAndPassword(
-        _emailController.text,
-        _pwController.text,
-      );
+            _emailController.text,
+            _pwController.text,
+          );
 
       // Navigiere zum MainScreen nach erfolgreichem Login
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const Welcome(
-          ),
+          builder: (context) => const Welcome(),
         ),
       );
     } on FirebaseAuthException catch (e) {
@@ -147,6 +145,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 32),
                 ElevatedButton(
                   onPressed: isLoading ? null : _signInWithEmailAndPassword,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFBADE02), // Updated color
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: isLoading
@@ -162,8 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SignUpScreen(
-                        ),
+                        builder: (context) => const SignUpScreen(),
                       ),
                     );
                   },
