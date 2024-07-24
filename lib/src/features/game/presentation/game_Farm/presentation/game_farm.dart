@@ -26,7 +26,6 @@ class GameFarmState extends State<GameFarm> {
   late Color pigButtonColor;
   late VideoPlayerController videoController;
   late String videoPath;
-  late bool isAnswerCorrect;
 
   @override
   void initState() {
@@ -38,10 +37,12 @@ class GameFarmState extends State<GameFarm> {
       videoPath,
       videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: true),
     )..initialize().then((_) {
-        setState(() {
-          videoController.play();
-          videoController.setLooping(false);
-        });
+        if (mounted) {
+          setState(() {
+            videoController.play();
+            videoController.setLooping(false);
+          });
+        }
       });
   }
 
@@ -54,11 +55,11 @@ class GameFarmState extends State<GameFarm> {
   void handleAnimalSelection(String animal) {
     setState(() {
       if (animal == 'Pig') {
-        isAnswerCorrect = false;
         pigButtonColor = AppColors.wrongAnswerButtonColor;
-      } else if (animal == 'Chicken') {
-        isAnswerCorrect = true;
         chickenButtonColor = AppColors.answerButtonColor;
+      } else if (animal == 'Chicken') {
+        chickenButtonColor = AppColors.correctAnswerButtonColor;
+        pigButtonColor = AppColors.answerButtonColor;
       }
     });
   }

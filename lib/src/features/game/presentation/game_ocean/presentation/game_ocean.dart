@@ -26,7 +26,6 @@ class GameOceanState extends State<GameOcean> {
   late Color cancerButtonColor;
   late VideoPlayerController videoController;
   late String videoPath;
-  late bool isAnswerCorrect;
 
   @override
   void initState() {
@@ -38,10 +37,12 @@ class GameOceanState extends State<GameOcean> {
       videoPath,
       videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: true),
     )..initialize().then((_) {
-        setState(() {
-          videoController.play();
-          videoController.setLooping(false);
-        });
+        if (mounted) {
+          setState(() {
+            videoController.play();
+            videoController.setLooping(false);
+          });
+        }
       });
   }
 
@@ -54,12 +55,10 @@ class GameOceanState extends State<GameOcean> {
   void handleAnimalSelection(String animal) {
     setState(() {
       if (animal == 'Cancer') {
-        isAnswerCorrect = false;
         cancerButtonColor = AppColors.wrongAnswerButtonColor;
         whaleButtonColor = AppColors.answerButtonColor;
       } else if (animal == 'Whale') {
-        isAnswerCorrect = true;
-        whaleButtonColor = AppColors.answerButtonColor;
+        whaleButtonColor = AppColors.correctAnswerButtonColor;
         cancerButtonColor = AppColors.answerButtonColor;
       }
     });

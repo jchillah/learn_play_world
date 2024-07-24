@@ -21,8 +21,6 @@ class GameEndVideo extends StatefulWidget {
 class GameEndVideoState extends State<GameEndVideo> {
   late VideoPlayerController _controller;
   late String _videoPath;
-  late String levelTheme = widget.levelTheme;
-  bool levelCompleted = false;
 
   @override
   void initState() {
@@ -32,27 +30,19 @@ class GameEndVideoState extends State<GameEndVideo> {
       _videoPath,
       videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: true),
     )..initialize().then((_) {
-        setState(() {
-          _controller.play();
-          _controller.setLooping(false);
-        });
+        if (mounted) {
+          setState(() {
+            _controller.play();
+            _controller.setLooping(false);
+          });
+        }
       });
-
-    levelCompleted = checkLevelCompletion(widget.levelTheme, widget.level);
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
-
-  bool checkLevelCompletion(String levelTheme, int level) {
-    if (levelTheme == 'Farm' && level == 1 && levelCompleted) {
-      return true;
-    }
-
-    return false;
   }
 
   @override
@@ -67,17 +57,10 @@ class GameEndVideoState extends State<GameEndVideo> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 100),
-                Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Image.asset(
-                        'assets/images/great_job.png',
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Image.asset('assets/images/great_job.png',
+                      fit: BoxFit.contain),
                 ),
                 const SizedBox(height: 20),
                 GestureDetector(
@@ -87,38 +70,22 @@ class GameEndVideoState extends State<GameEndVideo> {
                     });
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) {
-                        return const Overview();
-                      }),
+                      MaterialPageRoute(builder: (context) => const Overview()),
                     );
                   },
                   child:
                       Image.asset("assets/images/buttons/next_game_button.png"),
                 ),
                 const SizedBox(height: 40),
-                if (levelCompleted)
-                  _controller.value.isInitialized
-                      ? Padding(
-                          padding: const EdgeInsets.only(left: 16.0, right: 16),
-                          child: AspectRatio(
-                            aspectRatio: _controller.value.aspectRatio,
-                            child: VideoPlayer(_controller),
-                          ),
-                        )
-                      : const CircularProgressIndicator()
-                else
-                  Container(
-                    child: _controller.value.isInitialized
-                        ? Padding(
-                            padding:
-                                const EdgeInsets.only(left: 16.0, right: 16),
-                            child: AspectRatio(
-                              aspectRatio: _controller.value.aspectRatio,
-                              child: VideoPlayer(_controller),
-                            ),
-                          )
-                        : const CircularProgressIndicator(),
-                  ),
+                _controller.value.isInitialized
+                    ? Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16),
+                        child: AspectRatio(
+                          aspectRatio: _controller.value.aspectRatio,
+                          child: VideoPlayer(_controller),
+                        ),
+                      )
+                    : const CircularProgressIndicator(),
               ],
             ),
           ),

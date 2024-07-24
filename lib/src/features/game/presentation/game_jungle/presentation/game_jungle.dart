@@ -26,7 +26,6 @@ class GameJungleState extends State<GameJungle> {
   late Color zebraButtonColor;
   late VideoPlayerController videoController;
   late String videoPath;
-  late bool isAnswerCorrect;
 
   @override
   void initState() {
@@ -38,10 +37,12 @@ class GameJungleState extends State<GameJungle> {
       videoPath,
       videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: true),
     )..initialize().then((_) {
-        setState(() {
-          videoController.play();
-          videoController.setLooping(false);
-        });
+        if (mounted) {
+          setState(() {
+            videoController.play();
+            videoController.setLooping(false);
+          });
+        }
       });
   }
 
@@ -54,11 +55,9 @@ class GameJungleState extends State<GameJungle> {
   void handleAnimalSelection(String animal) {
     setState(() {
       if (animal == 'Zebra') {
-        isAnswerCorrect = false;
         zebraButtonColor = AppColors.wrongAnswerButtonColor;
         parrotButtonColor = AppColors.answerButtonColor;
       } else if (animal == 'Parrot') {
-        isAnswerCorrect = true;
         parrotButtonColor = AppColors.correctAnswerButtonColor;
         zebraButtonColor = AppColors.answerButtonColor;
       }
