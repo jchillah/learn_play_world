@@ -27,14 +27,12 @@ class GameJungleState extends State<GameJungle> {
   late VideoPlayerController videoController;
   late String videoPath;
   late bool isAnswerCorrect;
-  late String levelTheme;
 
   @override
   void initState() {
     super.initState();
     parrotButtonColor = AppColors.answerButtonColor;
     zebraButtonColor = AppColors.answerButtonColor;
-    levelTheme = widget.levelTheme;
     videoPath = VideoPathProvider.getVideoPath(widget.levelTheme, widget.level);
     videoController = VideoPlayerController.asset(
       videoPath,
@@ -74,59 +72,51 @@ class GameJungleState extends State<GameJungle> {
         backgroundColor: AppColors.backgroundColor,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: <Widget>[
-              const MenuRow(),
-              const SizedBox(height: 50),
-              AnswerButton(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                const MenuRow(),
+                const SizedBox(height: 50),
+                AnswerButton(
                   levelTheme: 'Jungle',
                   isAnswerCorrect: true,
                   controller: videoController,
                   onPressed: () {
-                    levelTheme = 'Jungle';
-                    setState(() {
-                      isAnswerCorrect = true;
-                      handleAnimalSelection('Parrot');
-                      videoController.pause();
-                    });
+                    handleAnimalSelection('Parrot');
+                    videoController.pause();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => GameEnd(
-                          levelTheme: levelTheme,
-                          level: 1,
-                        ),
-                        settings: RouteSettings(
-                          arguments: ModalRoute.of(context)!.settings.arguments,
+                          levelTheme: widget.levelTheme,
+                          level: widget.level,
                         ),
                       ),
                     );
                   },
                   imagePath: 'assets/images/animals/parrot.png',
-                  buttonColor: parrotButtonColor),
-              const SizedBox(height: 50),
-              AnswerMask(
-                controller: videoController,
-                imageAsset: 'assets/images/animals/masks/parrot_mask.png',
-                width: 83,
-                height: 140,
-              ),
-              const SizedBox(height: 50),
-              AnswerButton(
+                  buttonColor: parrotButtonColor,
+                ),
+                const SizedBox(height: 50),
+                AnswerMask(
+                  controller: videoController,
+                  imageAsset: 'assets/images/animals/masks/parrot_mask.png',
+                  width: 83,
+                  height: 140,
+                ),
+                const SizedBox(height: 50),
+                AnswerButton(
                   levelTheme: 'Jungle',
                   isAnswerCorrect: false,
                   controller: videoController,
                   onPressed: () {
-                    levelTheme = 'Jungle';
-                    setState(
-                      () {
-                        handleAnimalSelection('Zebra');
-                      },
-                    );
+                    handleAnimalSelection('Zebra');
                   },
                   imagePath: 'assets/images/animals/zebra.png',
-                  buttonColor: zebraButtonColor),
-            ],
+                  buttonColor: zebraButtonColor,
+                ),
+              ],
+            ),
           ),
         ),
       ),

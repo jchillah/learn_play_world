@@ -43,8 +43,8 @@ class GameEndVideoState extends State<GameEndVideo> {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   bool checkLevelCompletion(String levelTheme, int level) {

@@ -27,7 +27,6 @@ class GameFarmState extends State<GameFarm> {
   late VideoPlayerController videoController;
   late String videoPath;
   late bool isAnswerCorrect;
-  late String levelTheme = widget.levelTheme;
 
   @override
   void initState() {
@@ -48,8 +47,8 @@ class GameFarmState extends State<GameFarm> {
 
   @override
   void dispose() {
-    super.dispose();
     videoController.dispose();
+    super.dispose();
   }
 
   void handleAnimalSelection(String animal) {
@@ -57,11 +56,9 @@ class GameFarmState extends State<GameFarm> {
       if (animal == 'Pig') {
         isAnswerCorrect = false;
         pigButtonColor = AppColors.wrongAnswerButtonColor;
-        chickenButtonColor = AppColors.answerButtonColor;
       } else if (animal == 'Chicken') {
         isAnswerCorrect = true;
         chickenButtonColor = AppColors.answerButtonColor;
-        pigButtonColor = AppColors.answerButtonColor;
       }
     });
   }
@@ -73,66 +70,51 @@ class GameFarmState extends State<GameFarm> {
         backgroundColor: AppColors.backgroundColor,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: <Widget>[
-              const MenuRow(),
-              const SizedBox(
-                height: 50,
-              ),
-              AnswerButton(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                const MenuRow(),
+                const SizedBox(height: 50),
+                AnswerButton(
                   levelTheme: "Farm",
                   isAnswerCorrect: true,
                   controller: videoController,
                   onPressed: () {
-                    levelTheme = 'Farm';
-                    setState(() {
-                      isAnswerCorrect = true;
-                      handleAnimalSelection('Chicken');
-                      videoController.pause();
-                    });
-
+                    handleAnimalSelection('Chicken');
+                    videoController.pause();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => GameEnd(
-                          levelTheme: levelTheme,
-                          level: 1,
-                        ),
-                        settings: RouteSettings(
-                          arguments: ModalRoute.of(context)!.settings.arguments,
+                          levelTheme: widget.levelTheme,
+                          level: widget.level,
                         ),
                       ),
                     );
                   },
                   imagePath: 'assets/images/animals/chicken.png',
-                  buttonColor: chickenButtonColor),
-              const SizedBox(
-                height: 50,
-              ),
-              AnswerMask(
-                controller: videoController,
-                imageAsset: 'assets/images/animals/masks/chicken_mask.png',
-                width: 140,
-                height: 150,
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              AnswerButton(
+                  buttonColor: chickenButtonColor,
+                ),
+                const SizedBox(height: 50),
+                AnswerMask(
+                  controller: videoController,
+                  imageAsset: 'assets/images/animals/masks/chicken_mask.png',
+                  width: 140,
+                  height: 150,
+                ),
+                const SizedBox(height: 50),
+                AnswerButton(
                   levelTheme: 'Farm',
                   isAnswerCorrect: false,
                   controller: videoController,
                   onPressed: () {
-                    levelTheme = 'Farm';
-                    setState(
-                      () {
-                        handleAnimalSelection('Pig');
-                      },
-                    );
+                    handleAnimalSelection('Pig');
                   },
                   imagePath: 'assets/images/animals/pig.png',
-                  buttonColor: pigButtonColor),
-            ],
+                  buttonColor: pigButtonColor,
+                ),
+              ],
+            ),
           ),
         ),
       ),

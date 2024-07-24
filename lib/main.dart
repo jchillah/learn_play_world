@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:learn_play_world/firebase_options.dart';
 import 'package:learn_play_world/src/app.dart';
 import 'package:learn_play_world/src/data/auth_repository.dart.dart';
-import 'package:learn_play_world/src/data/database_repository.dart';
-import 'package:learn_play_world/src/data/mock_database.dart';
+import 'package:learn_play_world/src/data/video_path_provider/video_path_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -14,14 +13,14 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  DatabaseRepository databaseRepository = MockDatabase();
+  VideoPathProvider videoPathProvider = VideoPathProvider();
   AuthRepository authRepository =
       AuthRepository(FirebaseAuth.instance, options: null);
 
   runApp(MultiProvider(
     providers: [
-      Provider<DatabaseRepository>(
-        create: (context) => databaseRepository,
+      Provider<VideoPathProvider>(
+        create: (context) => videoPathProvider,
       ),
       Provider<AuthRepository>(
         create: (context) => authRepository,
