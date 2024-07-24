@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learn_play_world/src/config/colors/app_colors.dart';
-import 'package:learn_play_world/src/data/mock_database.dart';
+import 'package:learn_play_world/src/data/video_path_provider/video_path_provider.dart';
 import 'package:learn_play_world/src/features/game/presentation/game_end/presentation/game_end.dart';
 import 'package:learn_play_world/src/features/utils/answer_button.dart';
 import 'package:learn_play_world/src/features/utils/answer_mask.dart';
@@ -34,7 +34,7 @@ class GameFarmState extends State<GameFarm> {
     super.initState();
     chickenButtonColor = AppColors.answerButtonColor;
     pigButtonColor = AppColors.answerButtonColor;
-    videoPath = MockDatabase().getVideoPath(widget.levelTheme, widget.level);
+    videoPath = VideoPathProvider.getVideoPath(widget.levelTheme, widget.level);
     videoController = VideoPlayerController.asset(
       videoPath,
       videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: true),

@@ -83,13 +83,21 @@ class GameJungleState extends State<GameJungle> {
                   isAnswerCorrect: true,
                   controller: videoController,
                   onPressed: () {
-                    handleAnimalSelection('Parrot');
+                    levelTheme = 'Jungle';
+                    setState(() {
+                      isAnswerCorrect = true;
+                      handleAnimalSelection('Parrot');
+                      videoController.pause();
+                    });
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => GameEnd(
                           levelTheme: levelTheme,
-                          level: widget.level,
+                          level: 1,
+                        ),
+                        settings: RouteSettings(
+                          arguments: ModalRoute.of(context)!.settings.arguments,
                         ),
                       ),
                     );
@@ -109,7 +117,12 @@ class GameJungleState extends State<GameJungle> {
                   isAnswerCorrect: false,
                   controller: videoController,
                   onPressed: () {
-                    handleAnimalSelection('Zebra');
+                    levelTheme = 'Jungle';
+                    setState(
+                      () {
+                        handleAnimalSelection('Zebra');
+                      },
+                    );
                   },
                   imagePath: 'assets/images/animals/zebra.png',
                   buttonColor: zebraButtonColor),
