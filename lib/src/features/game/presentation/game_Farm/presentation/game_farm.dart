@@ -54,13 +54,12 @@ class GameFarmState extends State<GameFarm> {
 
   void handleAnimalSelection(String animal) {
     setState(() {
-      if (animal == 'Pig') {
-        pigButtonColor = AppColors.wrongAnswerButtonColor;
-        chickenButtonColor = AppColors.answerButtonColor;
-      } else if (animal == 'Chicken') {
-        chickenButtonColor = AppColors.correctAnswerButtonColor;
-        pigButtonColor = AppColors.answerButtonColor;
-      }
+      pigButtonColor = animal == 'Pig'
+          ? AppColors.wrongAnswerButtonColor
+          : AppColors.answerButtonColor;
+      chickenButtonColor = animal == 'Chicken'
+          ? AppColors.correctAnswerButtonColor
+          : AppColors.answerButtonColor;
     });
   }
 

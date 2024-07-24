@@ -54,13 +54,12 @@ class GameOceanState extends State<GameOcean> {
 
   void handleAnimalSelection(String animal) {
     setState(() {
-      if (animal == 'Cancer') {
-        cancerButtonColor = AppColors.wrongAnswerButtonColor;
-        whaleButtonColor = AppColors.answerButtonColor;
-      } else if (animal == 'Whale') {
-        whaleButtonColor = AppColors.correctAnswerButtonColor;
-        cancerButtonColor = AppColors.answerButtonColor;
-      }
+      cancerButtonColor = animal == 'Cancer'
+          ? AppColors.wrongAnswerButtonColor
+          : AppColors.answerButtonColor;
+      whaleButtonColor = animal == 'Whale'
+          ? AppColors.correctAnswerButtonColor
+          : AppColors.answerButtonColor;
     });
   }
 

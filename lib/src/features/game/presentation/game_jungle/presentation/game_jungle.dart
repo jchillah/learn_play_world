@@ -54,13 +54,12 @@ class GameJungleState extends State<GameJungle> {
 
   void handleAnimalSelection(String animal) {
     setState(() {
-      if (animal == 'Zebra') {
-        zebraButtonColor = AppColors.wrongAnswerButtonColor;
-        parrotButtonColor = AppColors.answerButtonColor;
-      } else if (animal == 'Parrot') {
-        parrotButtonColor = AppColors.correctAnswerButtonColor;
-        zebraButtonColor = AppColors.answerButtonColor;
-      }
+      zebraButtonColor = animal == 'Zebra'
+          ? AppColors.wrongAnswerButtonColor
+          : AppColors.answerButtonColor;
+      parrotButtonColor = animal == 'Parrot'
+          ? AppColors.correctAnswerButtonColor
+          : AppColors.answerButtonColor;
     });
   }
 
