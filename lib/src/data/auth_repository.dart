@@ -26,11 +26,20 @@ class AuthRepository {
 
   Future<void> signUpWithEmailAndPassword(String email, String pw) {
     return _firebaseAuth.createUserWithEmailAndPassword(
-        email: email, password: pw);
+      email: email,
+      password: pw,
+    );
   }
 
   Future<void> loginWithEmailAndPassword(String email, String pw) {
-    return _firebaseAuth.signInWithEmailAndPassword(email: email, password: pw);
+    return _firebaseAuth.signInWithEmailAndPassword(
+      email: email,
+      password: pw,
+    );
+  }
+
+  Future<void> signInAnonymously() {
+    return _firebaseAuth.signInAnonymously();
   }
 
   Future<void> logout() {
@@ -40,4 +49,26 @@ class AuthRepository {
   Stream<User?> authStateChanges() {
     return _firebaseAuth.authStateChanges();
   }
+
+  Future<void> sendPasswordResetEmail(String email) {
+    return _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  // Benutzerprofil aktualisieren
+  Future<void> updateProfile({String? displayName, String? photoURL}) async {
+    User? user = _firebaseAuth.currentUser;
+
+    if (user != null) {
+      await user.updateProfile(displayName: displayName, photoURL: photoURL);
+      await user.reload();
+    }
+  }
 }
+
+
+
+
+
+
+
+

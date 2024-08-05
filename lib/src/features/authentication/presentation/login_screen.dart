@@ -8,9 +8,7 @@ import 'package:learn_play_world/src/features/authentication/presentation/sign_u
 import 'package:learn_play_world/src/features/welcome/presentation/welcome.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({
-    super.key,
-  });
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -56,17 +54,14 @@ class _LoginScreenState extends State<LoginScreen> {
             _pwController.text,
           );
 
-      // Überprüfe, ob das Widget noch gemountet ist
       if (!mounted) return;
 
-      // Navigiere zum MainScreen nach erfolgreichem Login
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const Welcome(),
         ),
       );
     } on FirebaseAuthException catch (e) {
-      // Überprüfe, ob das Widget noch gemountet ist
       if (!mounted) return;
 
       setState(() {
@@ -89,6 +84,51 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Future<void> _sendPasswordResetEmail() async {
+    setState(() {
+      errorText = null;
+    });
+
+    try {
+      if (_emailController.text.isEmpty) {
+        throw FirebaseAuthException(
+          code: 'empty-email',
+          message: 'Bitte gib deine E-Mail-Adresse ein.',
+        );
+      }
+
+      await context.read<AuthRepository>().sendPasswordResetEmail(
+            _emailController.text,
+          );
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content:
+              Text('Passwort-Reset-Link gesendet! Überprüfe deine E-Mails.'),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+
+      setState(() {
+        switch (e.code) {
+          case 'empty-email':
+            errorText = 'Bitte gib deine E-Mail-Adresse ein.';
+            break;
+          case 'invalid-email':
+            errorText = 'Ungültige Email-Adresse.';
+            break;
+          case 'user-not-found':
+            errorText = 'Kein Benutzer mit dieser E-Mail-Adresse gefunden.';
+            break;
+          default:
+            errorText = 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.';
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,9 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Image.asset(
                   "assets/images/learn_play_world.png",
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 if (errorText != null)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -165,16 +203,28 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 32),
                 const Divider(),
                 const SizedBox(height: 32),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SignUpScreen(),
-                      ),
-                    );
-                  },
-                  child: const Text("Noch keinen Account? Zur Registrierung"),
+                Row(
+                  children: [
+                    TextButton(
+                      onPressed: _sendPasswordResetEmail,
+                      child: const Text("forgot your Password?"),
+                    ),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignUpScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text("Register"),
+                    ),
+                    const SizedBox(height: 16),
+                    
+                    
+                  ],
                 ),
               ],
             ),

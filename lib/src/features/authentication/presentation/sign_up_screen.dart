@@ -56,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         // Snackbar muss im Widget aufgerufen werden
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
-            _showSnackbar("Account wurde erfolgreich erstellt");
+            _showSnackbar("Account created successfully");
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -70,7 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (mounted) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
-            _showSnackbar("Fehler beim Erstellen des Accounts: $e");
+            _showSnackbar("error creating account: $e");
           }
         });
       }
@@ -133,13 +133,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   validator: (value) {
                     return validateRepeatPw(_pwController.text, value)
                         ? null
-                        : "Passwörter müssen identisch sein";
+                        : "passwords do not match";
                   },
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   obscureText: !showPassword,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
-                    labelText: "Passwort wiederholen",
+                    labelText: "repeat Password",
                     icon: const Icon(Icons.password),
                     suffixIcon: IconButton(
                       onPressed: () {
@@ -161,7 +161,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Text("Registrieren"),
+                    child: Text("register"),
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -176,7 +176,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     );
                   },
-                  child: const Text("Bereits einen Account? Zum Login"),
+                  child: const Text("You already have an account? Login here"),
                 ),
               ],
             ),
