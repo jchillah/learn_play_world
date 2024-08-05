@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_play_world/firebase_options.dart';
 import 'package:learn_play_world/src/app.dart';
-import 'package:learn_play_world/src/data/auth_repository.dart.dart';
+import 'package:learn_play_world/src/data/auth_repository.dart';
 import 'package:learn_play_world/src/data/video_path_provider/video_path_provider.dart';
 import 'package:provider/provider.dart';
 

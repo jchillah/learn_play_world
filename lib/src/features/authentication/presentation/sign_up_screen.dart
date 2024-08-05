@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learn_play_world/src/config/colors/app_colors.dart';
-import 'package:learn_play_world/src/data/auth_repository.dart.dart';
+import 'package:learn_play_world/src/data/auth_repository.dart';
 import 'package:learn_play_world/src/features/authentication/application/validators.dart';
 import 'package:learn_play_world/src/features/authentication/presentation/login_screen.dart';
-import 'package:learn_play_world/src/features/welcome/presentation/welcome.dart'; // Importiere die Welcome-Seite
+import 'package:learn_play_world/src/features/welcome/presentation/welcome.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -40,7 +40,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void _showSnackbar(String message) {
-    _scaffoldKey.currentState?.showSnackBar(SnackBar(content: Text(message)));
+    if (mounted) {
+      _scaffoldKey.currentState?.showSnackBar(SnackBar(content: Text(message)));
+    }
+  }
+
+  void _handleSignUp() async {
+    try {
+      await context.read<AuthRepository>().signUpWithEmailAndPassword(
+            _emailController.text,
+            _pwController.text,
+          );
+
+      if (mounted) {
+        // Snackbar muss im Widget aufgerufen werden
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            _showSnackbar("Account wurde erfolgreich erstellt");
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Welcome(),
+              ),
+            );
+          }
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            _showSnackbar("Fehler beim Erstellen des Accounts: $e");
+          }
+        });
+      }
+    }
   }
 
   @override
@@ -121,26 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 const SizedBox(height: 32),
                 ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      await context
-                          .read<AuthRepository>()
-                          .signUpWithEmailAndPassword(
-                            _emailController.text,
-                            _pwController.text,
-                          );
-                      _showSnackbar("Account wurde erfolgreich erstellt");
-                      // Nach erfolgreicher Registrierung zur Welcome-Seite navigieren
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Welcome(),
-                        ),
-                      );
-                    } catch (e) {
-                      _showSnackbar("Fehler beim Erstellen des Accounts: $e");
-                    }
-                  },
+                  onPressed: _handleSignUp,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.buttonColor,
                   ),

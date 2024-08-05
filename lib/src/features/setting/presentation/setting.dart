@@ -28,44 +28,60 @@ class SettingState extends State<Setting> {
   }
 
   Future<void> _fetchUsername() async {
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(currentUser!.uid)
-        .get();
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser!.uid)
+          .get();
 
-    if (userDoc.exists && userDoc.data() != null) {
-      setState(() {
-        _usernameController.text = userDoc['username'] ?? '';
-      });
+      if (userDoc.exists && userDoc.data() != null) {
+        final username = userDoc['username'] ?? '';
+
+        if (mounted) {
+          setState(() {
+            _usernameController.text = username;
+          });
+        }
+      }
+    } catch (e) {
+      // Handle any errors here
     }
   }
 
   Future<void> _saveUsername() async {
     if (currentUser != null) {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(currentUser!.uid)
-          .set({
-        'username': _usernameController.text,
-      }, SetOptions(merge: true));
+      try {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser!.uid)
+            .set({
+          'username': _usernameController.text,
+        }, SetOptions(merge: true));
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Username saved successfully'),
-          duration: Duration(seconds: 2),
-        ),
-      );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Username saved successfully'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      } catch (e) {
+        // Handle any errors here
+      }
     }
   }
 
   void _logout() async {
     await FirebaseAuth.instance.signOut();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
-    );
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ),
+      );
+    }
   }
 
   @override

@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learn_play_world/src/config/colors/app_colors.dart';
-import 'package:learn_play_world/src/data/auth_repository.dart.dart';
+import 'package:learn_play_world/src/data/auth_repository.dart';
 import 'package:learn_play_world/src/features/authentication/application/validators.dart';
 import 'package:learn_play_world/src/features/authentication/presentation/sign_up_screen.dart';
 import 'package:learn_play_world/src/features/welcome/presentation/welcome.dart';
@@ -56,6 +56,9 @@ class _LoginScreenState extends State<LoginScreen> {
             _pwController.text,
           );
 
+      // Überprüfe, ob das Widget noch gemountet ist
+      if (!mounted) return;
+
       // Navigiere zum MainScreen nach erfolgreichem Login
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
@@ -63,6 +66,9 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
     } on FirebaseAuthException catch (e) {
+      // Überprüfe, ob das Widget noch gemountet ist
+      if (!mounted) return;
+
       setState(() {
         switch (e.code) {
           case 'empty-input':
@@ -82,6 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
