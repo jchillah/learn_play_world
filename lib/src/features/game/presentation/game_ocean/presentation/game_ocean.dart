@@ -33,6 +33,7 @@ class GameOceanState extends State<GameOcean> {
     whaleButtonColor = AppColors.answerButtonColor;
     cancerButtonColor = AppColors.answerButtonColor;
     videoPath = VideoPathProvider.getVideoPath(widget.levelTheme, widget.level);
+
     videoController = VideoPlayerController.asset(
       videoPath,
       videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: true),
@@ -43,6 +44,9 @@ class GameOceanState extends State<GameOcean> {
             videoController.setLooping(false);
           });
         }
+      }).catchError((error) {
+        debugPrint('Error initializing video controller: $error');
+        // Optional: Fehlerbehandlung oder Fallback-Logik hier hinzufügen
       });
   }
 
@@ -53,23 +57,28 @@ class GameOceanState extends State<GameOcean> {
   }
 
   void handleAnimalSelection(String animal) {
-    setState(() {
-      cancerButtonColor = animal == 'Cancer'
-          ? AppColors.wrongAnswerButtonColor
-          : AppColors.answerButtonColor;
-      whaleButtonColor = animal == 'Whale'
-          ? AppColors.correctAnswerButtonColor
-          : AppColors.answerButtonColor;
-    });
+    if (animal == 'Cancer' &&
+            cancerButtonColor != AppColors.wrongAnswerButtonColor ||
+        animal == 'Whale' &&
+            whaleButtonColor != AppColors.correctAnswerButtonColor) {
+      setState(() {
+        cancerButtonColor = animal == 'Cancer'
+            ? AppColors.wrongAnswerButtonColor
+            : AppColors.answerButtonColor;
+        whaleButtonColor = animal == 'Whale'
+            ? AppColors.correctAnswerButtonColor
+            : AppColors.answerButtonColor;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+    return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[

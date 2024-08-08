@@ -7,6 +7,7 @@ import 'package:learn_play_world/src/data/auth_repository.dart';
 import 'package:learn_play_world/src/data/video_path_provider/video_path_provider.dart';
 import 'package:provider/provider.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

@@ -27,13 +27,20 @@ class SplashScreenState extends State<SplashScreen> {
     _loadWidget();
   }
 
+  @override
+  dispose() {
+    super.dispose();
+  }
+
   _loadWidget() async {
-    Future.delayed(Duration(seconds: widget.duration), () {
+    await Future.delayed(Duration(seconds: widget.duration));
+
+    if (mounted) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => widget.navigateAfterSeconds),
       );
-    });
+    }
   }
 
   @override
